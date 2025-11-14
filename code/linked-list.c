@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include "linked-list.h"
 
