@@ -76,6 +76,14 @@ void printArray(int* a, int n) {
     printf("]\n");
 }
 
+void printReverArray(int* a,int n){
+    printf("[ ");
+    for (int i = n-1; i>=0; i--){
+        printf("%d ", a[i]);
+    }
+    printf("]\n");
+}
+
 int main(){
     int a[]={5, 1, 7, 3, 4, 9, 6, 8, 2};
     int n= sizeof(a)/sizeof(a[0]);
@@ -89,7 +97,7 @@ int main(){
     // MaxHeapSort(a,n);
     minHeapSort(a,n);
 
-    printArray(a,n);
+    printReverArray(a,n);
     
     
     return 0;
