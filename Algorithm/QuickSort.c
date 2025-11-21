@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void swap(int* a, int i, int j) {
+    int t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+}
+
 void quicksortRange(int* a, int l, int r) {
     if (l < r) {
         int pi = qsPartitionHoare(a, l, r);

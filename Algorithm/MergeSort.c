@@ -1,5 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+void swap(int* a, int i, int j) {
+    int t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+}
 
 void sortMergePart(int* a, int l, int r) {
     int m = (l + r)/2;
