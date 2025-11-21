@@ -8,17 +8,6 @@ void swap(int* a, int i, int j) {
     a[j] = t;
 }
 
-void sortMergePart(int* a, int l, int r) {
-    int m = (l + r)/2;
-    if (m > l) sortMergePart(a, l, m);
-    if (m + 1 < r) sortMergePart(a, m + 1, r);
-    mergeParts_inPlace(a, l, m, r);
-}
-
-void sortMerge(int* a, int n) {
-    sortMergePart(a, 0, n-1);
-}
-
 void mergeParts_aux(int* a, int l, int m, int r) {
     int pn = m - l + 1, qn = r - m;
     int *p = (int*)malloc(pn * sizeof(int)),
@@ -48,6 +37,16 @@ void mergeParts_inPlace(int* a, int l, int m, int r) {
     }
 }
 
+void sortMergePart(int* a, int l, int r) {
+    int m = (l + r)/2;
+    if (m > l) sortMergePart(a, l, m);
+    if (m + 1 < r) sortMergePart(a, m + 1, r);
+    mergeParts_inPlace(a, l, m, r);
+}
+
+void sortMerge(int* a, int n) {
+    sortMergePart(a, 0, n-1);
+}
 
 int main(){
     
