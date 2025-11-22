@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "linked-list.h"
 
@@ -143,4 +144,10 @@ void llDeleteAt(LinkedList* pl, ListElement* a) {
     if (prev != NULL) {
         llDeleteAfter(pl, prev);
     }
+}
+
+void printList(LinkedList l) {
+    for (ListElement* p = l; p != NULL; p = p->next)
+        printf("%.0f ", p->data);
+    printf("\n");
 }

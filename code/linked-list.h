@@ -20,3 +20,4 @@ ListElement* llSeek(LinkedList l, int i);
 void llForEach(LinkedList l, void (*func)(float data));
 void llInsertBefore(LinkedList* pl, ListElement* a, float v);
 void llDeleteAt(LinkedList* pl, ListElement* a);
+void printList(LinkedList l);
