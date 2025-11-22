@@ -113,10 +113,34 @@ void llForEach(LinkedList l, void (*func)(float data)) {
 
 
 
-// void llInsertBefore(LinkedList* pl, ListElement* a, float v) {
-//     // to do
-// }
+void llInsertBefore(LinkedList* pl, ListElement* a, float v) {
+    if (a == NULL) return;
 
-// void llDeleteAt(LinkedList* pl, ListElement* a) {
-//     // to do
-// }
+    if (*pl == a) {
+        llInsertHead(pl, v);
+        return;
+    }
+
+    ListElement* prev;
+    for (prev = *pl; prev != NULL && prev->next != a; prev = prev->next);
+
+    if (prev != NULL) {
+        llInsertAfter(pl, prev, v);
+    }
+}
+
+void llDeleteAt(LinkedList* pl, ListElement* a) {
+    if (a == NULL) return;
+
+    if (*pl == a) {
+        llDeleteHead(pl);
+        return;
+    }
+
+    ListElement* prev;
+    for (prev = *pl; prev != NULL && prev->next != a; prev = prev->next);
+
+    if (prev != NULL) {
+        llDeleteAfter(pl, prev);
+    }
+}
