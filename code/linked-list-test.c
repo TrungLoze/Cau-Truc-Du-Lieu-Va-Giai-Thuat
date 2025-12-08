@@ -14,10 +14,13 @@ int main() {
 
     llInit(&l);
 
-    llInsertTail(&l, 60);
+    float v = 60
+    llInsertTail(&l, &v,sizeof(v));
 
-    llInsertHead(&l, 10);
-    llInsertHead(&l, 20);
+    float v = 10;
+    llInsertHead(&l, &v,sizeof(v));
+    float v = 20;
+    llInsertHead(&l, &v,sizeof(v));
 
     llInsertTail(&l, 50);
 

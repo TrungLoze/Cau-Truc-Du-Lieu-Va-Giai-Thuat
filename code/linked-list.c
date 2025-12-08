@@ -1,5 +1,6 @@
-#include <stdio.h>
+
 #include <stdlib.h>
+#include <memory.h>
 #include "linked-list.h"
 
 
@@ -7,18 +8,26 @@ void llInit(LinkedList* pl) {
     *pl = NULL;
 }
 
-void llInsertHead(LinkedList* pl, float v) {
+
+void freeNode(ListElement* p) {
+    free(p->data);
+    free(p);
+}
+
+void llInsertHead(LinkedList* pl, void* v, int size) {
     ListElement* e = (ListElement*)malloc(sizeof(ListElement));
-    e->data = v;
+    e->data = malloc(size);
+    memcpy(e->data, v, size);
     e->next = *pl;
 
     *pl = e;
 }
 
 
-void llInsertTail(LinkedList* pl, float v) {
+void llInsertTail(LinkedList* pl, void* v, int size) {
     ListElement* e = (ListElement*)malloc(sizeof(ListElement));
-    e->data = v;
+    e->data = malloc(size);
+    memcpy(e->data, v, size);
     e->next = NULL;
 
     if (*pl == NULL) {
@@ -32,11 +41,12 @@ void llInsertTail(LinkedList* pl, float v) {
 }
 
 
-void llInsertAfter(LinkedList* pl, ListElement* a, float v) {
+void llInsertAfter(LinkedList* pl, ListElement* a, void* v, int size) {
     if (a == NULL) return;
     
     ListElement* e = (ListElement*)malloc(sizeof(ListElement));
-    e->data = v;
+    e->data = malloc(size);
+    memcpy(e->data, v, size);
     e->next = a->next;
 
     a->next = e;
@@ -47,7 +57,7 @@ void llDeleteHead(LinkedList* pl) {
     if (*pl == NULL) return;
     
     ListElement* e = (*pl)->next;
-    free(*pl);
+    freeNode(*pl);
     *pl = e;
 }
 
@@ -56,7 +66,7 @@ void llDeleteTail(LinkedList* pl) {
     if (*pl == NULL) return;
 
     if ((*pl)->next == NULL) {
-        free(*pl);
+        freeNode(*pl);
         *pl = NULL;
         return;
     }
@@ -64,7 +74,7 @@ void llDeleteTail(LinkedList* pl) {
     ListElement* last2;
     for (last2 = *pl; last2->next->next != NULL; last2 = last2->next);
 
-    free(last2->next);
+    freeNode(last2->next);
     last2->next = NULL;
 }
 
@@ -73,7 +83,7 @@ void llDeleteAfter(LinkedList* pl, ListElement* a) {
     if (a == NULL || a->next == NULL) return;
 
     ListElement* p = a->next->next;
-    free(a->next);
+    freeNode(a->next);
     a->next = p;
 }
 
@@ -82,7 +92,7 @@ void llDeleteAll(LinkedList* pl) {
     ListElement *p, *q;
     for (p = *pl; p != NULL; p = q) {
         q = p->next;
-        free(p);
+        freeNode(p);
     }
 
     *pl = NULL;
@@ -107,47 +117,41 @@ ListElement* llSeek(LinkedList l, int i) {
 }
 
 
-void llForEach(LinkedList l, void (*func)(float data)) {
+void llForEach(LinkedList l, void (*func)(void* data, int size)) {
     for (ListElement* p = l; p != NULL; p = p->next)
-        func(p->data);
+        func(p->data, p->size);
 }
 
 
 
-void llInsertBefore(LinkedList* pl, ListElement* a, float v) {
-    if (a == NULL) return;
+void llInsertBefore(LinkedList* pl, ListElement* a, void* v, int size) {
+    if (a == NULL || *pl == NULL) return;
 
-    if (*pl == a) {
-        llInsertHead(pl, v);
+    if (a == *pl) {
+        llInsertHead(pl, v, size);
         return;
     }
 
     ListElement* prev;
-    for (prev = *pl; prev != NULL && prev->next != a; prev = prev->next);
+    for (prev = *pl; prev->next != a && prev->next != NULL; prev = prev->next);
 
-    if (prev != NULL) {
-        llInsertAfter(pl, prev, v);
+    if (prev->next == a) {
+        llInsertAfter(pl, prev, v, size);
     }
 }
 
 void llDeleteAt(LinkedList* pl, ListElement* a) {
-    if (a == NULL) return;
+    if (a == NULL || *pl == NULL) return;
 
-    if (*pl == a) {
+    if (a == *pl) {
         llDeleteHead(pl);
         return;
     }
 
     ListElement* prev;
-    for (prev = *pl; prev != NULL && prev->next != a; prev = prev->next);
+    for (prev = *pl; prev->next != a && prev->next != NULL; prev = prev->next);
 
-    if (prev != NULL) {
+    if (prev->next == a) {
         llDeleteAfter(pl, prev);
     }
-}
-
-void printList(LinkedList l) {
-    for (ListElement* p = l; p != NULL; p = p->next)
-        printf("%.0f ", p->data);
-    printf("\n");
 }
