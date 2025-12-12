@@ -1,0 +1,3 @@
+gcc -g A B -o C
+gcc B -o C
+

@@ -102,15 +102,38 @@ void btDFS_LVR(BTNode* n){
 
     if(n->right) btDFS_LVR(n->right);
 
+    // STACK stack;
+    // init(&stack);
+    // push(&stack, n);
+
+    // while (!empty(stack)) {
+    //     n = top(stack);
+    //     pop(&stack);
+
+    //     printf("%d ", n->data);
+
+    //     if (n->right != NULL) push(&stack, n->right);
+    //     if (n->left != NULL) push(&stack, n->left);
+    // }
+
 }
 
-void btDFS_RLV(BTNode* n){
-    if(n->right) btDFS_LVR(n->right);
+// void btBFS(BTNode*){
+//     QUEUE queue;
+//     init(&queue);
+//     enqueue(&queue, n);
 
-    if(n->left) btDFS_LVR(n->left);
+//     while (!empty(queue)) {
+//         n = top(queue);
+//         dequeue(&queue);
 
-    printf("%d ",n->data);
-}
+//         printf("%d ", n->data);
+
+//         if (n->left != NULL) enqueue(&queue, n->left);
+//         if (n->right != NULL) enqueue(&queue, n->right);
+//     } 
+// }
+
 
 int main(){
     // BTNode* a=btCreatNode(10);
