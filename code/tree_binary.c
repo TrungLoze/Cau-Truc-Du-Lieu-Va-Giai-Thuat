@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <math.h>
 
 typedef struct __BTNode{
     int data;
@@ -40,6 +41,15 @@ void btDestroyNode(BTNode*n,int recursive){
     free(n);
 }
 
+BTNode* btClone(BTNode* n){
+    if (n == NULL) return NULL;
+    return btCreatNodeWithChildern(
+        n->data,
+        btClone(n->left),
+        btClone(n->right)
+    );
+}
+
 int btIsLeaf(BTNode* n){
     return (n->left == NULL) && (n->right == NULL);
 }
@@ -64,10 +74,42 @@ BTNode* btLeftMost(BTNode* n){
 
 BTNode* btRightMost(BTNode* n){
     if(n == NULL) return NULL;
-    while(n->right != NULL){
-        n = n->right;
-    }
-    return n;
+    if(n->right == NULL) return n;
+    return btRightMost(n->right);
+}
+
+int btIsFull(BTNode* n){
+    if(n->left == NULL && n->right == NULL) return 1;
+    if ((n->left == NULL) && (n->right != NULL) ||
+        (n->left != NULL) && (n->right == NULL)) return 0;
+    return btIsFull(n->left) && btIsFull(n->right);
+}
+
+int btDepth(BTNode* n){
+    if (n == NULL) return 0;
+
+    int ld = btDepth(n->left);
+    int rd = btDepth(n->right);
+
+    if(ld > rd) return ld+1;
+    return rd+1;
+}
+
+void btDFS_LVR(BTNode* n){
+    if(n->left) btDFS_LVR(n->left);
+
+    printf("%d ",n->data);
+
+    if(n->right) btDFS_LVR(n->right);
+
+}
+
+void btDFS_RLV(BTNode* n){
+    if(n->right) btDFS_LVR(n->right);
+
+    if(n->left) btDFS_LVR(n->left);
+
+    printf("%d ",n->data);
 }
 
 int main(){
@@ -106,12 +148,11 @@ int main(){
         )
     );
 
-    // printf("a: %d\n",a->data);
-    // printf("c: %d\n",a->right->data);
-    // printf("f: %d\n",a->left->right->right->data);
+    btDFS_LVR(a);
+    printf("\n");
+    btDFS_RLV(a);
 
-    printf("Left: %d\n", btLeftMost(a)->data);
-    printf("Right: %d\n", btRightMost(a)->data);
+    btDestroyNode(a,1);
 
     return 0;
 }
